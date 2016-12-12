@@ -34,6 +34,7 @@ public class Employee implements Serializable {
 	private Employee manager;
 	private String statut;
 	
+	
 	public Employee() {}
 	
 	public Employee(long id, String firstName, String lastName, int salary, Date startDate,
