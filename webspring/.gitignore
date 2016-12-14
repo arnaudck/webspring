@@ -1,1 +1,6 @@
-/target/
+target/
+home/
+.classpath
+.project
+.settings
+
