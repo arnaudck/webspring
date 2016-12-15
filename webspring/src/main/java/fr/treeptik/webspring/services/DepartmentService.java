@@ -15,6 +15,10 @@ public class DepartmentService implements IDepartmentService {
 	
 	@Autowired
 	private DepartmentDAO departmentDAO;
+	
+	public void setDAO(DepartmentDAO dao) {
+		this.departmentDAO = dao;
+	}
 
 	@Transactional
 	public Department create(Department department) {
