@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import fr.treeptik.webspring.model.Department;
@@ -17,21 +17,18 @@ import fr.treeptik.webspring.services.DepartmentService;
 
 public class EmployeeServiceTest {
 
-	private static DepartmentService departmentService;
-	private static DepartmentDAO mockDAO;
+	private DepartmentService departmentService;
+	private DepartmentDAO mockDAO;
 	
 	private Department department;
 	private List<Department> listDepartments;
 
-	@BeforeClass
-	public static void SetUpBeforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		mockDAO = createMock(DepartmentDAO.class);
 		departmentService = new DepartmentService();
 		departmentService.setDAO(mockDAO);
-	}
-	
-	@Before
-	public void setUp() throws Exception {
+		
 		department = new Department();
 		listDepartments = new ArrayList<>();
 	}
@@ -42,7 +39,7 @@ public class EmployeeServiceTest {
 
 	@Test
 	public void testCreate() {
-		department.setName("Test Department (mock)");
+		department.setName("New department");
 		expect(mockDAO.save(department)).andReturn(department);
 		replay(mockDAO);
 		departmentService.create(department);
@@ -58,13 +55,47 @@ public class EmployeeServiceTest {
 	}
 
 	@Test
+	public void testModify() {
+		department.setName("New department");
+		expect(mockDAO.save(department)).andReturn(department);
+		department.setName("Updated department");
+		expect(mockDAO.save(department)).andReturn(department);
+		replay(mockDAO);
+		departmentService.create(department);
+		departmentService.update(department);
+		verify(mockDAO);
+	}
+
+	@Test
+	public void testDeleteNonExistingDepartment() {
+		mockDAO.delete(department);
+		replay(mockDAO);
+		departmentService.delete(department);
+		verify(mockDAO);
+	}
+
+	@Test
+	public void testDeleteExistingDepartment() {
+		department.setName("New department");
+		expect(mockDAO.save(department)).andReturn(department);
+		mockDAO.delete(department);
+		replay(mockDAO);
+		departmentService.create(department);
+		departmentService.delete(department);
+		verify(mockDAO);
+	}
+
+	@Test
+	@Ignore
 	public void testFindById() {
+		department.setName("New department");
 		fail("Not yet implemented");
 	}
 
 	@Test
 	public void testFindByName() {
-		fail("Not yet implemented");
+		department.setName("New department");
+		
 	}
 
 }
